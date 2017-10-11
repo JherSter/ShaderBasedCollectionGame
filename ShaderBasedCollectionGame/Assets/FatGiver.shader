@@ -1,7 +1,7 @@
 ﻿Shader "Custom/FatGiver" {
 	Properties {
 		
-		_MainTex ("Albedo (RGB)", 2D) = "white" {}
+		_MainTex ("Albedo (RGB)", 2D) = "blue" {}
 		_Fat ("_Fat", Range(-0.5,1)) = 0.0
 	}
 	SubShader {

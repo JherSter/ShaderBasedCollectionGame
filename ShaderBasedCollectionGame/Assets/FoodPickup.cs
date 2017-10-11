@@ -5,17 +5,22 @@ using UnityEngine;
 public class FoodPickup : MonoBehaviour {
 	[SerializeField] Material _Fat;
 	private float _FatLvL = 0f;
+	private float _MinFatLvl = -0.5f;
+	private float _MaxFatLvl = 5f;
 	void Start(){
 	 _FatLvL = 0f;
 	}
 	void Update(){
-		_FatLvL -= 0.001f;
-		_Fat.SetFloat ("_Fat", _FatLvL);
+		
+		if (_FatLvL > _MinFatLvl) {
+			_FatLvL -= 0.001f;
+			_Fat.SetFloat ("_Fat", _FatLvL);
+		}
 	}
 	void OnTriggerEnter(Collider other) {
 		Destroy(gameObject);
-		_FatLvL = 6f;
-		_Fat.SetFloat ("_Fat", _FatLvL);
+
+		_Fat.SetFloat ("_Fat", _MaxFatLvl);
 
 	}
 }
