@@ -1,37 +1,27 @@
 ﻿Shader "Custom/FatGiver" {
-	Properties {
-		
-		_MainTex ("Albedo (RGB)", 2D) = "blue" {}
-		_Fat ("_Fat", Range(-0.5,1)) = 0.0
-	}
-	SubShader {
-		Tags { "RenderType"="Opaque" }
-		LOD 200
-		
-		CGPROGRAM
-		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Lambert vertex:vert
-
-
-		sampler2D _MainTex;
-		fixed _Fat;	
-
-		struct Input {
-			float2 uv_MainTex;
-		};
-
-		void vert(inout appdata_full v){
-		v.vertex.z = v.vertex.z + (1 * v.vertex.z) * _Fat;
-			v.vertex.y = v.vertex.y + (1 * v.vertex.y) * _Fat;
-
-
-		}
-
-		void surf (Input IN, inout SurfaceOutput o) {
-            half4 c = tex2D (_MainTex, IN.uv_MainTex);
-            o.Albedo = c.rgb;
-        }
-        ENDCG
-	}
-	FallBack "Diffuse"
-}
+Properties {
+      _MainTex ("Texture", 2D) = "white" {}
+      _Amount ("Extrusion Amount", Range(-0.5,0.5)) = 0
+    }
+    SubShader {
+      CGPROGRAM
+      //pragma
+      #pragma surface Surf Lambert vertex:Vert
+      //variables
+      sampler2D _MainTex;
+      float _Amount;
+      //structs
+      struct Input {
+          float2 mainTex;
+      };
+      //pragma functions
+      void Vert (inout appdata_full v) {
+          v.vertex.xyz += v.normal * _Amount;
+      }
+      void Surf (Input IN, inout SurfaceOutput output) {
+          output.Albedo = tex2D (_MainTex, IN.mainTex).rgb;
+      }
+      ENDCG
+    } 
+    Fallback "Diffuse"
+  }

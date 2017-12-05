@@ -3,25 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FoodPickup : MonoBehaviour {
-	[SerializeField] Material _Fat;
-	private float _FatLvL = 0f;
-	private float _MinFatLvl = -0.5f;
-	private float _MaxFatLvl = 5f;
-	void Start(){
-	 _FatLvL = 0f;
+	[SerializeField]
+	private Material _FatMaterial;
+	private float _Fatness;
+	private void Start()
+	{
+		_FatMaterial = gameObject.GetComponent<Renderer> ().material;
+		_Fatness = 0.1f;
+		FatMaker ();
 	}
-	void Update(){
-		
-		if (_FatLvL > _MinFatLvl) {
-			_FatLvL -= 0.001f;
-			_Fat.SetFloat ("_Fat", _FatLvL);
+	private void Update()
+	{
+		_Fatness = _Fatness - 0.0003f;
+		FatMaker ();
+	}
+	private void OnTriggerStay(Collider other)
+	{
+
+		if (other.CompareTag("Pickup") || Input.GetKeyDown(KeyCode.E)) {
+			_Fatness = _Fatness + 0.1f;
+			print (_Fatness);
+			FatMaker ();
+			Destroy (other.gameObject);
 		}
 	}
-	void OnTriggerEnter(Collider other) {
-		Destroy(gameObject);
-
-		_Fat.SetFloat ("_Fat", _MaxFatLvl);
-
+	private void FatMaker()
+	{
+		
+		_FatMaterial.SetFloat ("_Amount", _Fatness);
 	}
 }
-
